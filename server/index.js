@@ -10,15 +10,18 @@ const db= mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 
+}).promise();
+
+app.get('/api/product' ,async (req,res) =>{
+  try
+  {
+  const [row] = await db.query('SELECT * FROM products_project');
+  res.status(200).json(row);
+  } catch(err){
+    res.status(500).json({message:'error fach',error:err});
+  }
 });
 
-db.connect((err)=>{
-  if (err){
-    console.error("connect fail",err);
-    return;
-  }
-  {
-    console.log("connect successfully");
-  }
-
+app.listen(port, ()=>{
+  console.log(`server running http://localhost:${port}`)
 })
